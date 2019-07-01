@@ -15,7 +15,7 @@ Basically the same as the [original](https://github.com/brentyi/stl_web_viewer),
     <link rel="stylesheet" href="https://brentyi.github.io/stl_web_viewer2/build/stlwebviewer2.css" />
   </head>
   <body>
-    <div class="stlwv2_model" data-model-url="https://brentyi.github.io/stl_web_viewer2/models/planet_gear.stl"></div>
+    <div class="stlwv2-model" data-model-url="models/planet_gear.stl"></div>
     <script src="https://brentyi.github.io/stl_web_viewer2/build/stlwebviewer2.js"></script>
   </body>
 </html>
