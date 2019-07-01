@@ -1,21 +1,30 @@
 <!doctype html>
 <html>
   <head>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
-    <script src="scripts/three.min.js"></script>
-    <script src="scripts/STLLoader.js"></script>
-    <script src="scripts/Detector.js"></script>
-    <script src="scripts/OrbitControls.js"></script>
-    <script src="scripts/STLWebViewer2.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/106/three.min.js" integrity="sha256-tAVw6WRAXc3td2Esrjd28l54s3P2y7CDFu1271mu5LE=" crossorigin="anonymous"></script>
+    <script src="build/stlwebviewer2.js"></script>
 
     <link rel='stylesheet' href='stylesheets/style.css' />
+
+    <style>
+html {
+  background-color: #f7f7f7;
+}
+body {
+  padding: 3em 0;
+  width: 50em;
+  margin: 0 auto;
+}
+    </style>
   </head>
   <body>
-    <script>
-    $(function() {
-        THREE.STLViewer('models/planet_gear.stl');
-    });
-    </script>
-    <div id="percent"></div>
+    <div class="stlwv2_model" data-model-url="models/planet_gear.stl"></div>
+    <br />
+    <div class="stlwv2_model" data-model-url="models/remote.stl"></div>
+    <br />
+    <div class="stlwv2_model" data-model-url="models/plotter.stl"></div>
+    <br />
+    <div class="stlwv2_model" data-model-url="https://brentyi.com/public/LeggedBot.stl"></div>
   </body>
 </html>

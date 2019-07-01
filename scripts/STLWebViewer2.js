@@ -2,7 +2,15 @@
  * Helper for viewing STLs, with some additions for returning model volume, dimensions, file size, etc
  * brentyi@berkeley.edu
  */
-THREE.STLViewer = function(modelURL, $container, showBoundingBox, loadedCallback) {
+
+$(function() {
+    $(".stlwv2_model").each(function() {
+        $container = $(this);
+        THREE.STLWebViewer2($container.data("model-url"), $container);
+    });
+});
+
+THREE.STLWebViewer2 = function(modelURL, $container, showBoundingBox, loadedCallback) {
     if (!Detector.webgl) Detector.addGetWebGLMessage();
     var camera, controls, cameraTarget, scene, renderer, pointLight;
 
@@ -32,10 +40,12 @@ THREE.STLViewer = function(modelURL, $container, showBoundingBox, loadedCallback
 
     fileSize = 0;
 
+    if ($container.children('.percent').length == 0)
+        $container.append('<div class="percent"></div>');
     onProgress = function(event) {
         console.log(event.loaded + "/" + event.total);
         fileSize = event.total;
-        $container.children('#percent').text(Math.floor(event.loaded / event.total * 100.0) + "%");
+        $container.children('.percent').text(Math.floor(event.loaded / event.total * 100.0) + "%");
     };
 
     loader.load(modelURL, function(geometry) {
@@ -48,7 +58,7 @@ THREE.STLViewer = function(modelURL, $container, showBoundingBox, loadedCallback
             polygonOffsetFactor: 1,
             polygonOffsetUnits: 1,
             transparent: true,
-            opacity: 0.8
+            opacity: 0.85
         });
 
         var mesh = new THREE.Mesh(geometry, material);
@@ -60,7 +70,7 @@ THREE.STLViewer = function(modelURL, $container, showBoundingBox, loadedCallback
 
         var edges = new THREE.EdgesGeometry(geometry, 29);
         var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({
-            color: 0x777777
+            color: 0x666666
         }));
         scene.add(line);
 
@@ -107,7 +117,6 @@ THREE.STLViewer = function(modelURL, $container, showBoundingBox, loadedCallback
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.renderReverseSided = false;
     $container.append(renderer.domElement);
 
     animate();
