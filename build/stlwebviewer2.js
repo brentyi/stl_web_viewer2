@@ -1405,7 +1405,7 @@ THREE.STLLoader.prototype = {
  */
 
 $(function() {
-    $(".stlwv2_model").each(function() {
+    $(".stlwv2-model").each(function() {
         $container = $(this);
         THREE.STLWebViewer2($container.data("model-url"), $container);
     });
