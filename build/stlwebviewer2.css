@@ -12,7 +12,7 @@
     text-align: center;
     width: 100%;
     color: #ccc;
-    animation-name: pulse;
+    animation-name: stlwv2-pulse;
     animation-duration: 2s;
     animation-iteration-count: infinite;
 }
@@ -27,7 +27,7 @@
 .stlwv2-model.loaded canvas {
     opacity: 1;
 }
-@keyframes pulse {
+@keyframes stlwv2-pulse {
     0%   {opacity: 1;}
     50%  {opacity: 0.625;}
 }
