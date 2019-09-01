@@ -1491,7 +1491,6 @@ THREE.STLLoader.prototype = {
             });
 
             let mesh = new THREE.Mesh(geometry, material);
-
             mesh.position.set(0, 0, 0);
             mesh.castShadow = false;
             mesh.receiveShadow = false;

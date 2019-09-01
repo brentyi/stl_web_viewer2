@@ -52,6 +52,12 @@
     z-index: 1000;
     cursor: pointer;
     color: #aaa;
+    font-weight: 400;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+.stlwv2-model > .inner.loaded label {
+    opacity: 1;
 }
 .stlwv2-model > .inner > label.fullscreen-off {
     display: none;
