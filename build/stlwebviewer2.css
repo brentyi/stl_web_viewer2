@@ -3,9 +3,16 @@
     min-height: 20em;
     border: 1px solid #ccc;
 }
-.stlwv2-model .percent {
+.stlwv2-model > .inner {
     position: absolute;
-    z-index: -2;
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.stlwv2-model > .inner > .percent {
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
     font-size: 5em;
@@ -16,18 +23,45 @@
     animation-duration: 2s;
     animation-iteration-count: infinite;
 }
-.stlwv2-model canvas {
+@keyframes stlwv2-pulse {
+    0%   {opacity: 1;}
+    50%  {opacity: 0.625;}
+}
+.stlwv2-model > .inner > canvas {
     position: absolute;
-    z-index: -1;
     top: 0;
     left: 0;
     opacity: 0;
     transition: opacity 0.5s;
 }
-.stlwv2-model.loaded canvas {
+.stlwv2-model > .inner.loaded > canvas {
     opacity: 1;
 }
-@keyframes stlwv2-pulse {
-    0%   {opacity: 1;}
-    50%  {opacity: 0.625;}
+/* Fullscreen toggle styles */
+.stlwv2-model > .expand-checkbox {
+    display: none;
+}
+.stlwv2-model > .expand-checkbox:checked ~ .inner {
+    position: fixed;
+    z-index: 2000;
+}
+.stlwv2-model > .inner label {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    z-index: 1000;
+    cursor: pointer;
+    color: #aaa;
+}
+.stlwv2-model > .inner > label.fullscreen-off {
+    display: none;
+    top: 1em;
+    right: 1.5em;
+    color: #C33;
+}
+.stlwv2-model > .expand-checkbox:checked ~ .inner > label.fullscreen-on {
+    display: none;
+}
+.stlwv2-model > .expand-checkbox:checked ~ .inner > label.fullscreen-off {
+    display: block;
 }
