@@ -38,10 +38,10 @@
     opacity: 1;
 }
 /* Fullscreen toggle styles */
-.stlwv2-model > .expand-checkbox {
+.stlwv2-model > .fullscreen-checkbox {
     display: none;
 }
-.stlwv2-model > .expand-checkbox:checked ~ .inner {
+.stlwv2-model > .fullscreen-checkbox:checked ~ .inner {
     position: fixed;
     z-index: 2000;
 }
@@ -65,9 +65,9 @@
     right: 1.5em;
     color: #C33;
 }
-.stlwv2-model > .expand-checkbox:checked ~ .inner > label.fullscreen-on {
+.stlwv2-model > .fullscreen-checkbox:checked ~ .inner > label.fullscreen-on {
     display: none;
 }
-.stlwv2-model > .expand-checkbox:checked ~ .inner > label.fullscreen-off {
+.stlwv2-model > .fullscreen-checkbox:checked ~ .inner > label.fullscreen-off {
     display: block;
 }

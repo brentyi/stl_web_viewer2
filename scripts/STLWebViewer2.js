@@ -5,11 +5,19 @@
 
 (() => {
     $(() => {
+        // Load and view all STLs
         $('.stlwv2-model').each(function() {
             let $container = $(this);
             let modelUrl = $container.data('model-url');
             STLWebViewer2(modelUrl, $container);
         });
+
+        // Disable fullscreen when the user presses escape
+        $(document).keyup(function(e) {
+             if (e.key === "Escape") {
+                $('.stlwv2-model .fullscreen-checkbox').prop("checked", false);
+             }
+         });
     });
 
     let viewerCount = 0;
@@ -23,13 +31,13 @@
         }
 
         // Build out viewer DOM elements
-        expandCheckboxId = 'stlwv2-expand-' + viewerCount;
+        fullscreenCheckboxId = 'stlwv2-fullscreen-checkbox-' + viewerCount;
         $container.append('\
-            <input class="expand-checkbox" id="' + expandCheckboxId + '" type="checkbox"></input>\
+            <input class="fullscreen-checkbox" id="' + fullscreenCheckboxId + '" type="checkbox"></input>\
             <div class="inner">\
                 <div class="percent"></div>\
-                <label class="fullscreen-on" for="' + expandCheckboxId + '">fullscreen</label>\
-                <label class="fullscreen-off" for="' + expandCheckboxId + '">close</label>\
+                <label class="fullscreen-on" for="' + fullscreenCheckboxId + '">fullscreen</label>\
+                <label class="fullscreen-off" for="' + fullscreenCheckboxId + '">close</label>\
             </div>\
         ');
         let $innerContainer = $container.children('.inner');
