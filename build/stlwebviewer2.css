@@ -47,11 +47,9 @@
 }
 .stlwv2-model > .inner label {
     position: absolute;
-    top: 0.5em;
-    right: 0.5em;
+    padding: 0.25em;
     z-index: 1000;
     cursor: pointer;
-    color: #aaa;
     font-weight: 400;
     opacity: 0;
     transition: opacity 0.5s;
@@ -59,10 +57,18 @@
 .stlwv2-model > .inner.loaded label {
     opacity: 1;
 }
+.stlwv2-model > .inner > label.fullscreen-on {
+    font-size: 1.5em;
+    top: 0;
+    right: 0.1em;
+    transform: rotate(90deg);
+    color: #ccc;
+}
 .stlwv2-model > .inner > label.fullscreen-off {
     display: none;
-    top: 1em;
-    right: 1.5em;
+    font-size: 2em;
+    top: 0;
+    right: 0.5em;
     color: #C33;
 }
 .stlwv2-model > .fullscreen-checkbox:checked ~ .inner > label.fullscreen-on {
