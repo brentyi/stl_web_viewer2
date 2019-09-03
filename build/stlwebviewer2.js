@@ -1442,8 +1442,8 @@ THREE.STLLoader.prototype = {
             <input class="fullscreen-checkbox" id="' + fullscreenCheckboxId + '" type="checkbox"></input>\
             <div class="inner">\
                 <div class="percent"></div>\
-                <label class="fullscreen-on" for="' + fullscreenCheckboxId + '">&#x21F1;</label>\
-                <label class="fullscreen-off" for="' + fullscreenCheckboxId + '">&times;</label>\
+                <label class="fullscreen-on" title="Fullscreen" for="' + fullscreenCheckboxId + '">&#x21F1;</label>\
+                <label class="fullscreen-off" title="Close" for="' + fullscreenCheckboxId + '">&times;</label>\
             </div>\
         ');
         let $innerContainer = $container.children('.inner');

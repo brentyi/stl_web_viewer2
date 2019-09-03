@@ -56,8 +56,8 @@
 .stlwv2-model > .inner > label.fullscreen-on {
     font-size: 1.5em;
     top: 0;
-    right: 0.1em;
-    transform: rotate(90deg);
+    right: 0.2em;
+    transform: rotate(90deg); /* unicode icon rotate hack */
     color: #ccc;
 }
 .stlwv2-model > .inner > label.fullscreen-off {
