@@ -1,5 +1,7 @@
 # stl_web_viewer2
 
+Demo: https://brentyi.github.io/stl_web_viewer2/
+
 Friendly utility for embedding 3D models into webpages.
 
 Basically the same as the [original](https://github.com/brentyi/stl_web_viewer), but with less nodejs nonsense.
