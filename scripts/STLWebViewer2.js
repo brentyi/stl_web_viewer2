@@ -12,10 +12,12 @@
             STLWebViewer2(modelUrl, $container);
         });
 
-        // Disable fullscreen when the user presses escape
+        // Disable fullscreen when the user presses Escape
         $(document).keyup(function(e) {
              if (e.key === "Escape") {
-                $('.stlwv2-model .fullscreen-checkbox').prop("checked", false);
+                 $('.stlwv2-model .fullscreen-checkbox').each(function() {
+                     $(this).prop("checked") && $(this).prop("checked", false).trigger("change");
+                 });
              }
          });
     });
@@ -41,6 +43,76 @@
             </div>\
         ');
         let $innerContainer = $container.children('.inner');
+
+        // Fullscreen-mode toggle animations
+        let $fullscreenCheckbox = $('#' + fullscreenCheckboxId);
+        $fullscreenCheckbox.on("change", (event) => {
+            // Location and dimensions of viewer outer container
+            let top = $container.position().top - $('html').scrollTop();
+            let left = $container.position().left - $('html').scrollLeft();
+            let bottom = $(window).height() - (top + $container.innerHeight());
+            let width = $container.width();
+
+            // We're storing state in an invisible checkbox; poll the "checked" property
+            // to determine if we're going to or from fullscreen mode
+            if ($fullscreenCheckbox.prop('checked')) {
+                // Seamless position:absolute => position:fixed transition
+                // Also fade out a little for dramatic effect
+                $innerContainer.css(
+                {
+                    "top": top + "px",
+                    "bottom": bottom + "px",
+                    "left": left + "px",
+                    "width": width + "px",
+                    "position": "fixed",
+                    "opacity": "0.5",
+                    "z-index": 2000
+                });
+
+                // Expand to fill screen :)
+                $innerContainer.animate({
+                    "top": "0",
+                    "bottom": "0",
+                    "left": "0",
+                    "width": "100%",
+                    "opacity": "1"
+                }, 300, () => {
+                    // ...and fade back in
+                    $innerContainer.animate({
+                        "opacity": "1"
+                    }, 500);
+                });
+            } else {
+                // Fade out a little for dramatic effect
+                $innerContainer.css({
+                    "opacity": "0.5"
+                });
+
+                // Shrink to fill outer container
+                $innerContainer.animate({
+                    "top": top + "px",
+                    "bottom": bottom + "px",
+                    "left": left + "px",
+                    "width": width + "px"
+                }, 300, () => {
+                    // Reset all styles
+                    // Seamless position:fixed => position:absolute transition
+                    $innerContainer.css({
+                        "position": "",
+                        "top": "",
+                        "bottom": "",
+                        "left": "",
+                        "width": "",
+                        "z-index": ""
+                    });
+
+                    // ...and fade back in
+                    $innerContainer.animate({
+                        "opacity": "1"
+                    }, 500);
+                });
+            }
+        });
 
         // Start building our threejs scene
         let scene = new THREE.Scene();
@@ -155,8 +227,10 @@
         renderer.shadowMap.enabled = true;
         $innerContainer.append(renderer.domElement);
 
+        // Start!
         animate();
 
+        // Animate
         function animate() {
             camera.aspect = $innerContainer.width() / $innerContainer.height();
             camera.updateProjectionMatrix();
@@ -167,6 +241,7 @@
             render();
         }
 
+        // Render scene
         function render() {
             camera.lookAt(cameraTarget);
             renderer.render(scene, camera);

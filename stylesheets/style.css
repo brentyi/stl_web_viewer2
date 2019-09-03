@@ -41,10 +41,6 @@
 .stlwv2-model > .fullscreen-checkbox {
     display: none;
 }
-.stlwv2-model > .fullscreen-checkbox:checked ~ .inner {
-    position: fixed;
-    z-index: 2000;
-}
 .stlwv2-model > .inner label {
     position: absolute;
     padding: 0.25em;
