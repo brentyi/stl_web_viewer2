@@ -35,14 +35,14 @@
         // Build out viewer DOM elements
         fullscreenCheckboxId = 'stlwv2-fullscreen-checkbox-' + viewerCount;
         $container.append('\
-            <input class="fullscreen-checkbox" id="' + fullscreenCheckboxId + '" type="checkbox"></input>\
-            <div class="inner">\
-                <div class="percent"></div>\
-                <label class="fullscreen-on" title="Fullscreen" for="' + fullscreenCheckboxId + '">&#x21F1;</label>\
-                <label class="fullscreen-off" title="Close" for="' + fullscreenCheckboxId + '">&times;</label>\
+            <input class="stlwv2-fullscreen-checkbox" id="' + fullscreenCheckboxId + '" type="checkbox"></input>\
+            <div class="stlwv2-inner">\
+                <div class="stlwv2-percent"></div>\
+                <label class="stlwv2-fullscreen-on" title="Fullscreen" for="' + fullscreenCheckboxId + '">&#x21F1;</label>\
+                <label class="stlwv2-fullscreen-off" title="Close" for="' + fullscreenCheckboxId + '">&times;</label>\
             </div>\
         ');
-        let $innerContainer = $container.children('.inner');
+        let $innerContainer = $container.children('.stlwv2-inner');
 
         // Fullscreen-mode toggle animations
         let $fullscreenCheckbox = $('#' + fullscreenCheckboxId);
@@ -151,7 +151,9 @@
             // Progress callback -- (for % loaded indicator)
             console.log("Loading " + modelUrl + ": " + event.loaded + "/" + event.total);
             fileSize = event.total;
-            $innerContainer.children('.percent').text(Math.floor(event.loaded / event.total * 100.0) + "%");
+            $innerContainer.children('.stlwv2-percent').text(
+                Math.floor(event.loaded / event.total * 100.0) + "%"
+            );
         };
         let onLoaded = (geometry) => {
             // Callback for when our mesh has been fully loaded
@@ -204,7 +206,7 @@
             }
 
             // Done!
-            $innerContainer.addClass('loaded');
+            $innerContainer.addClass('stlwv2-loaded');
             loadedCallback && loadedCallback({
                 volume: calculateVolume(mesh),
                 width: Math.abs(mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x),
