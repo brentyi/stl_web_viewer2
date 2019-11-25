@@ -3,7 +3,7 @@
     min-height: 20em;
     border: 1px solid #ccc;
 }
-.stlwv2-model > .stlwv2-inner {
+.stlwv2-inner {
     position: absolute;
     overflow: hidden;
     top: 0;
@@ -11,7 +11,7 @@
     left: 0;
     right: 0;
 }
-.stlwv2-model > .stlwv2-inner > .stlwv2-percent {
+.stlwv2-inner > .stlwv2-percent {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -27,21 +27,21 @@
     0%   {opacity: 1;}
     50%  {opacity: 0.625;}
 }
-.stlwv2-model > .stlwv2-inner > canvas {
+.stlwv2-inner > canvas {
     position: absolute;
     top: 0;
     left: 0;
     opacity: 0;
     transition: opacity 0.5s;
 }
-.stlwv2-model > .stlwv2-inner.stlwv2-loaded > canvas {
+.stlwv2-inner.stlwv2-loaded > canvas {
     opacity: 1;
 }
 /* Fullscreen toggle styles */
-.stlwv2-model > .stlwv2-fullscreen-checkbox {
+.stlwv2-fullscreen-checkbox {
     display: none;
 }
-.stlwv2-model > .stlwv2-inner label {
+.stlwv2-inner .stlwv2-hud {
     position: absolute;
     padding: 0.25em;
     z-index: 1000;
@@ -49,26 +49,26 @@
     font-weight: 400;
     display: none;
 }
-.stlwv2-model > .stlwv2-inner.stlwv2-loaded label {
+.stlwv2-inner.stlwv2-loaded .stlwv2-hud {
     display: block;
 }
-.stlwv2-model > .stlwv2-inner > label.stlwv2-fullscreen-on {
+.stlwv2-inner > .stlwv2-hud.stlwv2-fullscreen-on {
     font-size: 1.5em;
     top: 0;
     right: 0.2em;
     transform: rotate(90deg); /* unicode icon rotate hack */
     color: #ccc;
 }
-.stlwv2-model > .stlwv2-inner > label.stlwv2-fullscreen-off {
+.stlwv2-inner > .stlwv2-hud.stlwv2-fullscreen-off {
     display: none;
     font-size: 2em;
     top: 0;
     right: 0.5em;
     color: #C33;
 }
-.stlwv2-model > .stlwv2-fullscreen-checkbox:checked ~ .stlwv2-inner > label.stlwv2-fullscreen-on {
+.stlwv2-fullscreen-checkbox:checked ~ .stlwv2-inner > .stlwv2-hud.stlwv2-fullscreen-on {
     display: none;
 }
-.stlwv2-model > .stlwv2-fullscreen-checkbox:checked ~ .stlwv2-inner > label.stlwv2-fullscreen-off {
+.stlwv2-fullscreen-checkbox:checked ~ .stlwv2-inner > .stlwv2-hud.stlwv2-fullscreen-off {
     display: block;
 }
