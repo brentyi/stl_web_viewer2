@@ -773,7 +773,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		event.preventDefault();
 		event.stopPropagation();
-		console.log("hello");
 		return false;
 
 	}

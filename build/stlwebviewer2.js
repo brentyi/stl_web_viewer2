@@ -851,7 +851,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		event.preventDefault();
 		event.stopPropagation();
-		console.log("hello");
 		return false;
 
 	}
@@ -1418,9 +1417,9 @@ THREE.STLLoader.prototype = {
 
         // Disable fullscreen when the user presses Escape
         $(document).keyup(function(e) {
-             if (e.key === "Escape") {
+             if (e.key === 'Escape') {
                  $('.stlwv2-model .stlwv2-fullscreen-checkbox').each(function() {
-                     $(this).prop("checked") && $(this).prop("checked", false).trigger("change");
+                     $(this).prop('checked') && $(this).prop('checked', false).trigger('change');
                  });
              }
          });
@@ -1437,7 +1436,7 @@ THREE.STLLoader.prototype = {
         }
 
         // Build out viewer DOM elements
-        fullscreenCheckboxId = 'stlwv2-fullscreen-checkbox-' + viewerCount;
+        let fullscreenCheckboxId = 'stlwv2-fullscreen-checkbox-' + viewerCount;
         $container.append('\
             <input class="stlwv2-fullscreen-checkbox" id="' + fullscreenCheckboxId + '" type="checkbox"></input>\
             <div class="stlwv2-inner">\
@@ -1454,69 +1453,69 @@ THREE.STLLoader.prototype = {
 
         // Fullscreen-mode toggle animations
         let $fullscreenCheckbox = $('#' + fullscreenCheckboxId);
-        $fullscreenCheckbox.on("change", (event) => {
+        $fullscreenCheckbox.on('change', (event) => {
             // Location and dimensions of viewer outer container
             let top = $container.position().top - $('html').scrollTop();
             let left = $container.position().left - $('html').scrollLeft();
             let bottom = $(window).height() - (top + $container.innerHeight());
             let width = $container.width();
 
-            // We're storing state in an invisible checkbox; poll the "checked" property
+            // We're storing state in an invisible checkbox; poll the 'checked' property
             // to determine if we're going to or from fullscreen mode
             if ($fullscreenCheckbox.prop('checked')) {
                 // Seamless position:absolute => position:fixed transition
                 // Also fade out a little for dramatic effect
                 $innerContainer.css(
                 {
-                    "top": top + "px",
-                    "bottom": bottom + "px",
-                    "left": left + "px",
-                    "width": width + "px",
-                    "position": "fixed",
-                    "opacity": "0.5",
-                    "z-index": 2000
+                    'top': top + "px",
+                    'bottom': bottom + "px",
+                    'left': left + "px",
+                    'width': width + "px",
+                    'position': "fixed",
+                    'opacity': "0.5",
+                    'z-index': 2000
                 });
 
                 // Expand to fill screen :)
                 $innerContainer.animate({
-                    "top": "0",
-                    "bottom": "0",
-                    "left": "0",
-                    "width": "100%",
-                    "opacity": "1"
+                    'top': "0",
+                    'bottom': "0",
+                    'left': "0",
+                    'width': "100%",
+                    'opacity': "1"
                 }, 300, () => {
                     // ...and fade back in
                     $innerContainer.animate({
-                        "opacity": "1"
+                        'opacity': "1"
                     }, 500);
                 });
             } else {
                 // Fade out a little for dramatic effect
                 $innerContainer.css({
-                    "opacity": "0.5"
+                    'opacity': "0.5"
                 });
 
                 // Shrink to fill outer container
                 $innerContainer.animate({
-                    "top": top + "px",
-                    "bottom": bottom + "px",
-                    "left": left + "px",
-                    "width": width + "px"
+                    'top': top + "px",
+                    'bottom': bottom + "px",
+                    'left': left + "px",
+                    'width': width + "px"
                 }, 300, () => {
                     // Reset all styles
                     // Seamless position:fixed => position:absolute transition
                     $innerContainer.css({
-                        "position": "",
-                        "top": "",
-                        "bottom": "",
-                        "left": "",
-                        "width": "",
-                        "z-index": ""
+                        'position': "",
+                        'top': "",
+                        'bottom': "",
+                        'left': "",
+                        'width': "",
+                        'z-index': ""
                     });
 
                     // ...and fade back in
                     $innerContainer.animate({
-                        "opacity": "1"
+                        'opacity': "1"
                     }, 500);
                 });
             }
@@ -1666,9 +1665,9 @@ THREE.STLLoader.prototype = {
     function calculateVolume(object){
         let total = 0;
 
-        geometry = new THREE.Geometry().fromBufferGeometry(object.geometry);
-        faces = geometry.faces;
-        vertices = geometry.vertices;
+        let geometry = new THREE.Geometry().fromBufferGeometry(object.geometry);
+        let faces = geometry.faces;
+        let vertices = geometry.vertices;
         for(let i = 0; i < faces.length; i++){
             let Pi = faces[i].a;
             let Qi = faces[i].b;
