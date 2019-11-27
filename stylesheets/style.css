@@ -37,42 +37,47 @@
 .stlwv2-inner.stlwv2-loaded > canvas {
     opacity: 1;
 }
-/* Fullscreen toggle styles */
+
+/*
+ * HUD styles
+ */
 .stlwv2-fullscreen-checkbox {
-    display: none;
+    /* This checkbox is just for storing state and should never be displayed */
+    display: none !important;
 }
 .stlwv2-hud {
+    /* Hide HUD elements until viewer is finished loading */
     display: none;
 }
-.stlwv2-loaded .stlwv2-hud {
+.stlwv2-loaded > .stlwv2-hud {
     position: absolute;
     padding: 0.25em;
     z-index: 1000;
     cursor: pointer;
     font-weight: 400;
-    display: block;
 }
-.stlwv2-inner .stlwv2-github-link {
-    color: #999;
+.stlwv2-loaded > .stlwv2-github-link {
     font-size: 1.2em;
     top: 0.57em;
     right: 3em;
     text-decoration: none;
+    color: #999;
     display: none;
 }
-.stlwv2-inner .stlwv2-fullscreen-on {
+.stlwv2-loaded > .stlwv2-fullscreen-on {
     font-size: 1.5em;
     top: 0;
     right: 0.2em;
     transform: rotate(90deg); /* unicode icon rotate hack */
     color: #ccc;
+    display: block;
 }
-.stlwv2-inner .stlwv2-fullscreen-off {
-    display: none;
+.stlwv2-loaded > .stlwv2-fullscreen-off {
     font-size: 2em;
     top: 0;
     right: 0.5em;
     color: #C33;
+    display: none;
 }
 .stlwv2-fullscreen-checkbox:checked ~ .stlwv2-loaded > .stlwv2-github-link {
     display: block;
