@@ -15,7 +15,7 @@
         // Disable fullscreen when the user presses Escape
         $(document).keyup(function(e) {
              if (e.key === "Escape") {
-                 $('.stlwv2-model .fullscreen-checkbox').each(function() {
+                 $('.stlwv2-model .stlwv2-fullscreen-checkbox').each(function() {
                      $(this).prop("checked") && $(this).prop("checked", false).trigger("change");
                  });
              }
