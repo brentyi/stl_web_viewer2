@@ -23,7 +23,7 @@
     });
 
     let viewerCount = 0;
-    let STLWebViewer2 = (modelUrl, $container, showBoundingBox, loadedCallback) => {
+    let STLWebViewer2 = function(modelUrl, $container, showBoundingBox, loadedCallback) {
         // Check for WebGl support
         if (!Detector.webgl) Detector.addGetWebGLMessage();
 
@@ -129,7 +129,6 @@
         // Orbit controls
         let controls = new THREE.OrbitControls(camera, $innerContainer.get(0));
         controls.target = cameraTarget;
-        controls.addEventListener('change', render);
         controls.enableDamping = true;
         controls.enableKeys = false;
         controls.rotateSpeed = 0.15;
@@ -209,6 +208,64 @@
                 scene.add(box);
             }
 
+            // Actual renderer stuff
+            function makeRenderer(antialias) {
+                let renderer = new THREE.WebGLRenderer({
+                    antialias: antialias
+                });
+                renderer.setClearColor(0xffffff);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.setSize($innerContainer.width(), $innerContainer.height());
+                renderer.gammaInput = true;
+                renderer.gammaOutput = true;
+                renderer.shadowMap.enabled = true;
+                return renderer
+            }
+            this.renderer = makeRenderer(true);
+            this.$renderer = this.renderer.domElement;
+            $innerContainer.append(this.$renderer);
+
+            // Render scene
+            let render = () => {
+                camera.lookAt(cameraTarget);
+                this.renderer.render(scene, camera);
+            }
+            controls.addEventListener('change', render);
+
+            // Animate
+            let start_time = performance.now();
+            let checked_framerate = false;
+            let loops = 0;
+            let animate = () => {
+                loops++;
+                if (!checked_framerate) {
+                    let delta = performance.now() - start_time;
+                    // Check framerate after 2 seconds
+                    if (delta > 2000) {
+                        let framerate = 1000 * loops / delta;
+                        console.log("Cumulative framerate: " + framerate);
+                        if (framerate < 25) {
+                            console.log("Disabling anti-aliasing");
+                            this.$renderer.remove();
+                            delete this.renderer;
+                            this.renderer = makeRenderer(false);
+                            this.$renderer = this.renderer.domElement;
+                            $innerContainer.append(this.$renderer);
+                            console.log(framerate);
+                        }
+                        checked_framerate = true;
+                    }
+                }
+                camera.aspect = $innerContainer.width() / $innerContainer.height();
+                camera.updateProjectionMatrix();
+                this.renderer.setSize($innerContainer.width(), $innerContainer.height());
+
+                requestAnimationFrame(animate);
+                controls.update();
+                render();
+            }
+            animate();
+
             // Done!
             $innerContainer.addClass('stlwv2-loaded');
             loadedCallback && loadedCallback({
@@ -221,37 +278,6 @@
         }
         loader.load(modelUrl, onLoaded, onProgress);
 
-        // Rendering!
-        let renderer = new THREE.WebGLRenderer({
-            antialias: false
-        });
-        renderer.setClearColor(0xffffff);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize($innerContainer.width(), $innerContainer.height());
-        renderer.gammaInput = true;
-        renderer.gammaOutput = true;
-        renderer.shadowMap.enabled = true;
-        $innerContainer.append(renderer.domElement);
-
-        // Start!
-        animate();
-
-        // Animate
-        function animate() {
-            camera.aspect = $innerContainer.width() / $innerContainer.height();
-            camera.updateProjectionMatrix();
-            renderer.setSize($innerContainer.width(), $innerContainer.height());
-
-            requestAnimationFrame(animate);
-            controls.update();
-            render();
-        }
-
-        // Render scene
-        function render() {
-            camera.lookAt(cameraTarget);
-            renderer.render(scene, camera);
-        }
 
         // Increment viewerCount
         // This is currently only used for our fullscreen checkbox IDs
