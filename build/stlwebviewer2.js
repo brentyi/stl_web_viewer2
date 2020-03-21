@@ -1412,7 +1412,7 @@ THREE.STLLoader.prototype = {
         $('.stlwv2-model').each(function() {
             let $container = $(this);
             let modelUrl = $container.data('model-url');
-            STLWebViewer2(modelUrl, $container);
+            new STLWebViewer2(modelUrl, $container);
         });
 
         // Disable fullscreen when the user presses Escape
@@ -1426,7 +1426,7 @@ THREE.STLLoader.prototype = {
     });
 
     let viewerCount = 0;
-    let STLWebViewer2 = function(modelUrl, $container, showBoundingBox, loadedCallback) {
+    function STLWebViewer2(modelUrl, $container, showBoundingBox, loadedCallback) {
         // Check for WebGl support
         if (!Detector.webgl) Detector.addGetWebGLMessage();
 
@@ -1625,8 +1625,7 @@ THREE.STLLoader.prototype = {
                 return renderer
             }
             this.renderer = makeRenderer(true);
-            this.$renderer = this.renderer.domElement;
-            $innerContainer.append(this.$renderer);
+            $innerContainer.append(this.renderer.domElement);
 
             // Render scene
             let render = () => {
@@ -1647,14 +1646,12 @@ THREE.STLLoader.prototype = {
                     if (delta > 2000) {
                         let framerate = 1000 * loops / delta;
                         console.log("Cumulative framerate: " + framerate);
-                        if (framerate < 25) {
+                        if (framerate < 35) {
                             console.log("Disabling anti-aliasing");
-                            this.$renderer.remove();
+                            this.renderer.domElement.remove();
                             delete this.renderer;
                             this.renderer = makeRenderer(false);
-                            this.$renderer = this.renderer.domElement;
-                            $innerContainer.append(this.$renderer);
-                            console.log(framerate);
+                            $innerContainer.append(this.renderer.domElement);
                         }
                         checked_framerate = true;
                     }
