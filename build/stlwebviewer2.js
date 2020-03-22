@@ -1562,11 +1562,12 @@ THREE.STLLoader.prototype = {
             // Animate
             let checked_framerate = false;
             let loops = 0;
+            let start_time = 0;
             let animate = () => {
                 loops++;
                 if (!checked_framerate) {
                     if (loops == 5) {
-                        var start_time = performance.now();
+                        start_time = performance.now();
                     } else if (loops > 5) {
                         let delta = performance.now() - start_time;
                         // Check framerate after 2 seconds
