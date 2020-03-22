@@ -1428,7 +1428,10 @@ THREE.STLLoader.prototype = {
     let viewerCount = 0;
     function STLWebViewer2(modelUrl, $container, showBoundingBox, loadedCallback) {
         // Check for WebGl support
-        if (!Detector.webgl) Detector.addGetWebGLMessage();
+        if (!Detector.webgl) {
+            Detector.addGetWebGLMessage({parent : $container[0]});
+            return;
+        }
 
         // If no container is defined, use body
         if($container == undefined) {
