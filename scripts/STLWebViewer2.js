@@ -235,27 +235,31 @@
             controls.addEventListener('change', render);
 
             // Animate
-            let start_time = performance.now();
             let checked_framerate = false;
             let loops = 0;
             let animate = () => {
                 loops++;
                 if (!checked_framerate) {
-                    let delta = performance.now() - start_time;
-                    // Check framerate after 2 seconds
-                    if (delta > 2000) {
-                        let framerate = 1000 * loops / delta;
-                        console.log("Cumulative framerate: " + framerate);
-                        if (framerate < 35) {
-                            console.log("Disabling anti-aliasing");
-                            this.renderer.domElement.remove();
-                            delete this.renderer;
-                            this.renderer = makeRenderer(false);
-                            $innerContainer.append(this.renderer.domElement);
+                    if (loops == 5) {
+                        var start_time = performance.now();
+                    } else if (loops > 5) {
+                        let delta = performance.now() - start_time;
+                        // Check framerate after 2 seconds
+                        if (delta > 2000) {
+                            let framerate = 1000 * (loops - 5) / delta;
+                            console.log("Cumulative framerate: " + framerate);
+                            if (framerate < 30) {
+                                console.log("Disabling anti-aliasing");
+                                this.renderer.domElement.remove();
+                                delete this.renderer;
+                                this.renderer = makeRenderer(false);
+                                $innerContainer.append(this.renderer.domElement);
+                            }
+                            checked_framerate = true;
                         }
-                        checked_framerate = true;
                     }
                 }
+
                 camera.aspect = $innerContainer.width() / $innerContainer.height();
                 camera.updateProjectionMatrix();
                 this.renderer.setSize($innerContainer.width(), $innerContainer.height());
