@@ -36,90 +36,24 @@
         }
 
         // Build out viewer DOM elements
-        let fullscreenCheckboxId = 'stlwv2-fullscreen-checkbox-' + viewerCount;
-        $container.append('\
-            <input class="stlwv2-fullscreen-checkbox" id="' + fullscreenCheckboxId + '" type="checkbox"></input>\
-            <div class="stlwv2-inner">\
-                <div class="stlwv2-percent"></div>\
-                <label class="stlwv2-hud stlwv2-fullscreen-on" title="Fullscreen" for="' + fullscreenCheckboxId + '">\
-                    &#x21F1;</label>\
-                <label class="stlwv2-hud stlwv2-fullscreen-off" title="Close" for="' + fullscreenCheckboxId + '">\
-                    &times;</label>\
-                <a class="stlwv2-hud stlwv2-github-link" target="_blank" href="https://github.com/brentyi/stl_web_viewer2">\
-                    STL Web Viewer</a>\
-            </div>\
-        ');
+        let checkboxId = 'stlwv2-fullscreen-checkbox-' + viewerCount;
+        $container.append([
+            '<input class="stlwv2-fullscreen-checkbox" id="' + checkboxId + '" type="checkbox"></input>',
+            '<div class="stlwv2-inner">',
+            '    <div class="stlwv2-percent"></div>',
+            '    <label class="stlwv2-hud stlwv2-fullscreen-on" title="Fullscreen" for="' + checkboxId + '">',
+            '        &#x21F1;</label>',
+            '    <label class="stlwv2-hud stlwv2-fullscreen-off" title="Close" for="' + checkboxId + '">',
+            '        &times;</label>',
+            '    <a class="stlwv2-hud stlwv2-github-link" target="_blank" href="https://github.com/brentyi/stl_web_viewer2">',
+            '        STL Web Viewer</a>',
+            '</div>',
+        ].join('\n'));
         let $innerContainer = $container.children('.stlwv2-inner');
 
-        // Fullscreen-mode toggle animations
-        let $fullscreenCheckbox = $('#' + fullscreenCheckboxId);
-        $fullscreenCheckbox.on('change', (event) => {
-            // Location and dimensions of viewer outer container
-            let top = $container.position().top - $('html').scrollTop();
-            let left = $container.position().left - $('html').scrollLeft();
-            let bottom = $(window).height() - (top + $container.innerHeight());
-            let width = $container.width();
-
-            // We're storing state in an invisible checkbox; poll the 'checked' property
-            // to determine if we're going to or from fullscreen mode
-            if ($fullscreenCheckbox.prop('checked')) {
-                // Seamless position:absolute => position:fixed transition
-                // Also fade out a little for dramatic effect
-                $innerContainer.css(
-                {
-                    'top': top + "px",
-                    'bottom': bottom + "px",
-                    'left': left + "px",
-                    'width': width + "px",
-                    'position': "fixed",
-                    'opacity': "0.5",
-                    'z-index': 2000
-                });
-
-                // Expand to fill screen :)
-                $innerContainer.animate({
-                    'top': "0",
-                    'bottom': "0",
-                    'left': "0",
-                    'width': "100%",
-                    'opacity': "1"
-                }, 300, () => {
-                    // ...and fade back in
-                    $innerContainer.animate({
-                        'opacity': "1"
-                    }, 500);
-                });
-            } else {
-                // Fade out a little for dramatic effect
-                $innerContainer.css({
-                    'opacity': "0.5"
-                });
-
-                // Shrink to fill outer container
-                $innerContainer.animate({
-                    'top': top + "px",
-                    'bottom': bottom + "px",
-                    'left': left + "px",
-                    'width': width + "px"
-                }, 300, () => {
-                    // Reset all styles
-                    // Seamless position:fixed => position:absolute transition
-                    $innerContainer.css({
-                        'position': "",
-                        'top': "",
-                        'bottom': "",
-                        'left': "",
-                        'width': "",
-                        'z-index': ""
-                    });
-
-                    // ...and fade back in
-                    $innerContainer.animate({
-                        'opacity': "1"
-                    }, 500);
-                });
-            }
-        });
+        // Fullscreen-mode toggle logic
+        let $fullscreenCheckbox = $('#' + checkboxId);
+        $fullscreenCheckbox.on('change', createFullscreenToggleHandler($container, $innerContainer));
 
         // Start building our threejs scene
         let scene = new THREE.Scene();
@@ -212,18 +146,6 @@
             }
 
             // Actual renderer stuff
-            function makeRenderer(antialias) {
-                let renderer = new THREE.WebGLRenderer({
-                    antialias: antialias
-                });
-                renderer.setClearColor(0xffffff);
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                renderer.setSize($innerContainer.width(), $innerContainer.height());
-                renderer.gammaInput = true;
-                renderer.gammaOutput = true;
-                renderer.shadowMap.enabled = true;
-                return renderer
-            }
             this.renderer = makeRenderer(true);
             $innerContainer.append(this.renderer.domElement);
 
@@ -286,6 +208,93 @@
         // Increment viewerCount
         // This is currently only used for our fullscreen checkbox IDs
         viewerCount++;
+    }
+
+    // Helper for creating a WebGL renderer
+    function makeRenderer(antialias) {
+        let renderer = new THREE.WebGLRenderer({
+            antialias: antialias
+        });
+        renderer.setClearColor(0xffffff);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+        renderer.shadowMap.enabled = true;
+        return renderer
+    }
+
+    // Helper for creating a curried "checkbox toggle" event handler
+    // Contains all animation logic, etc
+    function createFullscreenToggleHandler($container, $innerContainer) {
+        return function(event) {
+            $fullscreenCheckbox = $(this);
+
+            // Location and dimensions of viewer outer container
+            let top = $container.position().top - $('html').scrollTop();
+            let left = $container.position().left - $('html').scrollLeft();
+            let bottom = $(window).height() - (top + $container.innerHeight());
+            let width = $container.width();
+
+            // We're storing state in an invisible checkbox; poll the 'checked' property
+            // to determine if we're going to or from fullscreen mode
+            if ($fullscreenCheckbox.prop('checked')) {
+                // Seamless position:absolute => position:fixed transition
+                // Also fade out a little for dramatic effect
+                $innerContainer.css(
+                {
+                    'top': top + "px",
+                    'bottom': bottom + "px",
+                    'left': left + "px",
+                    'width': width + "px",
+                    'position': "fixed",
+                    'opacity': "0.5",
+                    'z-index': 2000
+                });
+
+                // Expand to fill screen :)
+                $innerContainer.animate({
+                    'top': "0",
+                    'bottom': "0",
+                    'left': "0",
+                    'width': "100%",
+                    'opacity': "1"
+                }, 300, () => {
+                    // ...and fade back in
+                    $innerContainer.animate({
+                        'opacity': "1"
+                    }, 500);
+                });
+            } else {
+                // Fade out a little for dramatic effect
+                $innerContainer.css({
+                    'opacity': "0.5"
+                });
+
+                // Shrink to fill outer container
+                $innerContainer.animate({
+                    'top': top + "px",
+                    'bottom': bottom + "px",
+                    'left': left + "px",
+                    'width': width + "px"
+                }, 300, () => {
+                    // Reset all styles
+                    // Seamless position:fixed => position:absolute transition
+                    $innerContainer.css({
+                        'position': "",
+                        'top': "",
+                        'bottom': "",
+                        'left': "",
+                        'width': "",
+                        'z-index': ""
+                    });
+
+                    // ...and fade back in
+                    $innerContainer.animate({
+                        'opacity': "1"
+                    }, 500);
+                });
+            }
+        };
     }
 
     // Helpers for computing object volumes
