@@ -267,8 +267,8 @@
       $fullscreenCheckbox = $(this);
 
       // Location and dimensions of viewer outer container
-      let top = $container.position().top - $("html").scrollTop();
-      let left = $container.position().left - $("html").scrollLeft();
+      let top = $container.position().top - scrollPosTop();
+      let left = $container.position().left - scrollPosLeft();
       let bottom = $(window).height() - (top + $container.innerHeight());
       let width = $container.width();
 
@@ -375,5 +375,27 @@
     let v213 = p2.x * p1.y * p3.z;
     let v123 = p1.x * p2.y * p3.z;
     return (-v321 + v231 + v312 - v132 - v213 + v123) / 6.0;
+  }
+
+  // Helpers for getting scroll position
+  // Based on:
+  //     https://stackoverflow.com/questions/2717252/document-body-scrolltop-is-always-0-in-ie-even-when-scrolling
+  function scrollPosTop() {
+    return typeof window.pageYOffset != "undefined"
+      ? window.pageYOffset
+      : document.documentElement.scrollTop
+      ? document.documentElement.scrollTop
+      : document.body.scrollTop
+      ? document.body.scrollTop
+      : 0;
+  }
+  function scrollPosLeft() {
+    return typeof window.pageXOffset != "undefined"
+      ? window.pageXOffset
+      : document.documentElement.scrollLeft
+      ? document.documentElement.scrollLeft
+      : document.body.scrollLeft
+      ? document.body.scrollLeft
+      : 0;
   }
 })();
