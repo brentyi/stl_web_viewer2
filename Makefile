@@ -1,12 +1,12 @@
 # Relies on minify: https://www.npmjs.com/package/minify
 
-# Scripts for sed to wrap our javascript in an anonymous function
+# Scripts to help sed wrap our javascript in an anonymous function
 # Helps with namespacing + minification
 SED_JS_PREFIX = '1i(() => {'
 SED_JS_SUFFIX = '$$a})();'
 
 # Javscript build rule
-# > This simply concatenates all matching JS files and minifies
+# > This concatenates + wraps all matching JS files and minifies
 build-js: scripts/*.js
 build-js:
 	sed -e $(SED_JS_PREFIX) -e $(SED_JS_SUFFIX) $^ \
