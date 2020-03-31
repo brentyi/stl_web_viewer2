@@ -1,16 +1,25 @@
 # Relies on minify: https://www.npmjs.com/package/minify
 
-build-js: scripts/Detector.js
-build-js: scripts/OrbitControls.js
-build-js: scripts/STLLoader.js
-build-js: scripts/STLWebViewer2.js
-build-js:
-	sed -e 's/latin1/utf8/' $^ | minify --js > build/stlwebviewer2.js
+# Scripts for sed to wrap our javascript in an anonymous function
+# Helps with namespacing + minification
+SED_JS_PREFIX = '1i(() => {'
+SED_JS_SUFFIX = '$$a})();'
 
-build-css: stylesheets/style.css
+# Javscript build rule
+# > This simply concatenates all matching JS files and minifies
+build-js: scripts/*.js
+build-js:
+	sed -e $(SED_JS_PREFIX) -e $(SED_JS_SUFFIX) $^ \
+		| minify --js \
+		> build/stlwebviewer2.js
+
+# CSS build rule
+# > This simply concatenates all matching CSS files and minifies
+build-css: stylesheets/*.css
 build-css:
-	sed -e 's/latin1/utf8/' $^ | minify --css > build/stlwebviewer2.css
+	cat $^ \
+		| minify --css \
+		> build/stlwebviewer2.css
 
 build: build-css build-js
-
 .DEFAULT_GOAL := build
